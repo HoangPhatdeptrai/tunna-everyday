@@ -1,3 +1,4 @@
+
 <head>
 <meta charset="utf-8">
 <title>Timeline</title>
@@ -25,6 +26,39 @@
                 
                 <!-- Timeline -->
                 <ul class="timeline">
+				<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "members";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT title, content, date FROM timeline";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result->fetch_assoc()) {
+	  $datee = $row['date'];
+	  $mydate = strtotime("$datee");
+
+    echo "<li class='timeline-item bg-white rounded ml-3 p-4 shadow'>
+                        <div class='timeline-arrow'></div>
+                        <h2 class='h5 mb-0'>".$row['title']."</h2><span class='small text-gray'><i class='fa fa-clock-o mr-1'></i>".date('jS F, Y', $mydate)."</span>
+                        <p class='text-small mt-2 font-weight-light'>".$row['content']."</p>
+                    </li>";
+  }
+} else {
+  echo "0 results";
+}
+$conn->close();
+?>
                     <li class="timeline-item bg-white rounded ml-3 p-4 shadow">
                         <div class="timeline-arrow"></div>
                         <h2 class="h5 mb-0">Title of section 1</h2><span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>21 March, 2019</span>
